@@ -7,6 +7,13 @@ from typing import Any
 api_url = 'https://api.hh.ru/vacancies'
 
 
+def get_data(params):
+    response = requests.get(url=api_url, params=params)
+    data = response.content.decode()
+    vacancies = json.loads(data)
+    return vacancies
+
+
 def company_ids_from_api(search_name: str) -> list:
     """Get company ids using HeadHunter API, by searching name of vacancy"""
     quantity = 3
@@ -15,9 +22,7 @@ def company_ids_from_api(search_name: str) -> list:
         'per_page': quantity
     }
     company_ids = []
-    response = requests.get(url=api_url, params=params)
-    data = response.content.decode()
-    vacancies = json.loads(data)
+    vacancies = get_data(params)
     for vacancy in vacancies['items']:
         company_ids.append(vacancy['employer']['id'])
         print(vacancy['employer']['name'])
@@ -31,8 +36,8 @@ def get_info_each_company(company_ids: (list, Any)) -> list:
         params = {
             'employer_id': company_id
         }
-        response = requests.get(url=api_url, params=params)
-        data = response.content.decode()
-        vacancies = json.loads(data)
-        company_data.append(vacancies)
+        vacancies = get_data(params)
+        company_data.append({'employer': vacancies['items'][0]['employer'],
+                             'vacancy': vacancies['items'],
+                             'quantity': vacancies['found']})
     return company_data
