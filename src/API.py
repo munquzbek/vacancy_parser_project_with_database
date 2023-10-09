@@ -14,9 +14,8 @@ def get_data(params):
     return vacancies
 
 
-def company_ids_from_api(search_name: str) -> list:
+def company_ids_from_api(search_name: str, quantity) -> list:
     """Get company ids using HeadHunter API, by searching name of vacancy"""
-    quantity = 3
     params = {
         'text': search_name,
         'per_page': quantity

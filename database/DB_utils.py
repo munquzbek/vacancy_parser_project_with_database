@@ -1,3 +1,5 @@
+from typing import Any
+
 import psycopg2
 
 
@@ -31,11 +33,47 @@ def create_database(database_name: str, params: dict):
                 vacancy_id SERIAL PRIMARY KEY,
                 company_id INT REFERENCES companies(company_id),
                 vacancy_name VARCHAR NOT NULL,
-                min_salary INTEGER,
-                max_salary INTEGER,
+                salary INTEGER,
                 vacancy_url TEXT
             )
         """)
 
     conn.commit()
     conn.close()
+
+
+def save_data_to_database(data: list[dict[str, Any]], database_name: str, params: dict):
+    """Save gotten data in DB"""
+    conn = psycopg2.connect(dbname=database_name, **params)
+
+    with conn.cursor() as cur:
+        for company in data:
+            cur.execute(
+                """
+                INSERT INTO companies (company_name, quantity_vacancies, company_url)
+                VALUES (%s, %s, %s)
+                RETURNING company_id
+                """,
+                (company['employer']['name'], company['quantity'], company['employer']['url'])
+            )
+            company_id = cur.fetchone()[0]
+            for vacancy in company['vacancy']:
+                if vacancy['salary'] is None:
+                    salary = 0
+                else:
+                    if vacancy['salary']['from'] is None:
+                        salary = 0
+                    else:
+                        salary = vacancy['salary']['from']
+                cur.execute(
+                    """
+                    INSERT INTO vacancies (company_id, vacancy_name, salary, vacancy_url)
+                    VALUES (%s, %s, %s, %s)
+                    RETURNING company_id
+                    """,
+                    (company_id, vacancy['name'], salary, vacancy['alternate_url'])
+                )
+
+    conn.commit()
+    conn.close()
+
