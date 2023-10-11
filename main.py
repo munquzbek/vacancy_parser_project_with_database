@@ -4,17 +4,26 @@ from database.config import config
 
 from src.API import company_ids_from_api, get_info_each_company
 
+from database.DBManager import get_companies_and_vacancies_count, get_all_vacancies, get_avg_salary
+
 
 def main():
     params = config()
+    #
+    # search_name = 'back-end'
+    # quantity = 40
+    #
+    # company_ids = company_ids_from_api(search_name, quantity)
+    # data = get_info_each_company(company_ids)
+    # create_database('headhunter', params)
+    # save_data_to_database(data, 'headhunter', params)
 
-    search_name = 'developer'
-    quantity = 10
+    # get_companies_and_vacancies_count('headhunter', params)
+    # get_all_vacancies('headhunter', params)
+    average_salary = get_avg_salary('headhunter', params)
 
-    company_ids = company_ids_from_api(search_name, quantity)
-    data = get_info_each_company(company_ids)
-    create_database('headhunter', params)
-    save_data_to_database(data, 'headhunter', params)
+
+
 
 
 if __name__ == '__main__':

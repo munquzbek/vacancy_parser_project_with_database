@@ -35,7 +35,14 @@ def get_all_vacancies(database_name: str, params: dict):
 
 def get_avg_salary(database_name: str, params: dict):
     """Get average salary of all vacancies."""
-    pass
+    conn = psycopg2.connect(dbname=database_name, **params)
+    with conn.cursor() as cur:
+        sql_select_query = 'SELECT AVG(salary) FROM vacancies'
+        cur.execute(sql_select_query)
+        data = cur.fetchone()
+        for d in data:
+            print(f'Average salary: {round(float(d), 2)}')
+            return d
 
 
 def get_vacancies_with_higher_salary():

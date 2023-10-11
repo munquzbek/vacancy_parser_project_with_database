@@ -34,6 +34,7 @@ def create_database(database_name: str, params: dict):
                 company_id INT REFERENCES companies(company_id),
                 vacancy_name VARCHAR NOT NULL,
                 salary INTEGER,
+                currency VARCHAR,
                 vacancy_url TEXT
             )
         """)
@@ -60,18 +61,21 @@ def save_data_to_database(data: list[dict[str, Any]], database_name: str, params
             for vacancy in company['vacancy']:
                 if vacancy['salary'] is None:
                     salary = 0
+                    currency = None
                 else:
                     if vacancy['salary']['from'] is None:
                         salary = 0
+                        currency = None
                     else:
+                        currency = vacancy['salary']['currency']
                         salary = vacancy['salary']['from']
                 cur.execute(
                     """
-                    INSERT INTO vacancies (company_id, vacancy_name, salary, vacancy_url)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO vacancies (company_id, vacancy_name, salary, currency, vacancy_url)
+                    VALUES (%s, %s, %s, %s, %s)
                     RETURNING company_id
                     """,
-                    (company_id, vacancy['name'], salary, vacancy['alternate_url'])
+                    (company_id, vacancy['name'], salary, currency, vacancy['alternate_url'])
                 )
 
     conn.commit()
