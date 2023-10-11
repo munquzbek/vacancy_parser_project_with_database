@@ -4,7 +4,8 @@ from database.config import config
 
 from src.API import company_ids_from_api, get_info_each_company
 
-from database.DBManager import get_companies_and_vacancies_count, get_all_vacancies, get_avg_salary
+from database.DBManager import get_companies_and_vacancies_count, get_all_vacancies, get_avg_salary, \
+    get_vacancies_with_higher_salary
 
 
 def main():
@@ -20,8 +21,8 @@ def main():
 
     # get_companies_and_vacancies_count('headhunter', params)
     # get_all_vacancies('headhunter', params)
-    average_salary = get_avg_salary('headhunter', params)
-
+    # average_salary = get_avg_salary('headhunter', params)
+    # get_vacancies_with_higher_salary(average_salary, 'headhunter', params)
 
 
 
