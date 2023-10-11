@@ -1,7 +1,6 @@
 # Vacancy parser project using database 
 
-This project gets data from hh.ru API and load in database
-Also, you can fetch some info from database
+This project gets data from hh.ru API and load in database. Also, you can fetch some info from database
 
 ## Installation
 Install requirements.txt
