@@ -1,7 +1,16 @@
+import psycopg2
 
-def get_companies_and_vacancies_count():
+
+def get_companies_and_vacancies_count(database_name: str, params: dict):
     """Get list of all companies and quantity of vacancies of each company."""
-    pass
+    conn = psycopg2.connect(dbname=database_name, **params)
+    with conn.cursor() as cur:
+        sql_select_query = 'SELECT company_name, quantity_vacancies ' \
+                           'FROM companies'
+        cur.execute(sql_select_query)
+        data = cur.fetchall()
+        for d in data:
+            print(f'Компания: {d[0]}, кол-во вакансий {d[1]}')
 
 
 def get_all_vacancies():
