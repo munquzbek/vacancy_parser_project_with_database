@@ -10,7 +10,7 @@ def get_companies_and_vacancies_count(database_name: str, params: dict):
         cur.execute(sql_select_query)
         data = cur.fetchall()
         for d in data:
-            print(f'Компания: {d[0]}, кол-во вакансий {d[1]}')
+            print(f'Company name: {d[0]}, quantity of vacancies {d[1]}')
 
 
 def get_all_vacancies(database_name: str, params: dict):
@@ -33,16 +33,14 @@ def get_all_vacancies(database_name: str, params: dict):
             print(f'Company name: {d[0]}, Vacancy name: {d[1]}, Salary: {salary} {currency}, url: {d[4]}')
 
 
-def get_avg_salary(database_name: str, params: dict) -> float:
+def get_avg_salary(database_name: str, params: dict):
     """Get average salary of all vacancies."""
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
         sql_select_query = 'SELECT AVG(salary) FROM vacancies'
         cur.execute(sql_select_query)
         data = cur.fetchone()
-        for d in data:
-            print(f'Average salary: {round(float(d), 2)}')
-            return round(d)
+        return data
 
 
 def get_vacancies_with_higher_salary(average_salary: float, database_name: str, params: dict):
@@ -70,4 +68,4 @@ def get_vacancies_with_keyword(keyword: str, database_name: str, params: dict):
         data = cur.fetchall()
         for d in data:
             print(f'Vacancy name: {d[0]}, Salary: {d[1]} {d[2]}, url: {d[3]}')
-
+        return data

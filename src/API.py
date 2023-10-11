@@ -22,9 +22,10 @@ def company_ids_from_api(search_name: str, quantity) -> list:
     }
     company_ids = []
     vacancies = get_data(params)
+    print('Found companies:\n')
     for vacancy in vacancies['items']:
         company_ids.append(vacancy['employer']['id'])
-        print(vacancy['employer']['name'])
+        print(f"{vacancy['employer']['name']}")
     return company_ids
 
 
