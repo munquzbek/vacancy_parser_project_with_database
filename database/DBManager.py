@@ -5,8 +5,8 @@ def get_companies_and_vacancies_count(database_name: str, params: dict):
     """Get list of all companies and quantity of vacancies of each company."""
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
-        sql_select_query = 'SELECT company_name, quantity_vacancies ' \
-                           'FROM companies'
+        sql_select_query = "SELECT company_name, quantity_vacancies " \
+                           "FROM companies"
         cur.execute(sql_select_query)
         data = cur.fetchall()
         for d in data:
@@ -18,9 +18,9 @@ def get_all_vacancies(database_name: str, params: dict):
     and a link to the vacancy."""
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
-        sql_select_query = 'SELECT company_name, vacancy_name, salary, currency, vacancy_url ' \
-                           'FROM vacancies ' \
-                           'INNER JOIN companies using (company_id)'
+        sql_select_query = "SELECT company_name, vacancy_name, salary, currency, vacancy_url "\
+                           "FROM vacancies " \
+                           "INNER JOIN companies using (company_id)"
         cur.execute(sql_select_query)
         data = cur.fetchall()
         for d in data:
@@ -49,16 +49,25 @@ def get_vacancies_with_higher_salary(average_salary: float, database_name: str, 
     """Get list of vacancies that salary higher than avg salary."""
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
-        sql_select_query = f'SELECT vacancy_name, salary, currency, vacancy_url ' \
-                           f'FROM vacancies ' \
-                           f'WHERE salary > {str(average_salary)} ' \
-                           f'ORDER BY salary DESC'
+        sql_select_query = f"SELECT vacancy_name, salary, currency, vacancy_url " \
+                           f"FROM vacancies " \
+                           f"WHERE salary > {str(average_salary)} " \
+                           f"ORDER BY salary DESC"
         cur.execute(sql_select_query)
         data = cur.fetchall()
         for d in data:
             print(f'Vacancy name: {d[0]}, Salary: {d[1]} {d[2]}, url: {d[3]}')
 
 
-def get_vacancies_with_keyword():
+def get_vacancies_with_keyword(keyword: str, database_name: str, params: dict):
     """Get list of vacancies with keyword. (ex: 'Python')"""
-    pass
+    conn = psycopg2.connect(dbname=database_name, **params)
+    with conn.cursor() as cur:
+        sql_select_query = f"SELECT vacancy_name, salary, currency, vacancy_url " \
+                           f"FROM vacancies " \
+                           f"WHERE vacancy_name LIKE '%{str(keyword)}%'"
+        cur.execute(sql_select_query)
+        data = cur.fetchall()
+        for d in data:
+            print(f'Vacancy name: {d[0]}, Salary: {d[1]} {d[2]}, url: {d[3]}')
+
