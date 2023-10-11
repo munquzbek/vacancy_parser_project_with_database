@@ -13,13 +13,27 @@ def get_companies_and_vacancies_count(database_name: str, params: dict):
             print(f'Компания: {d[0]}, кол-во вакансий {d[1]}')
 
 
-def get_all_vacancies():
+def get_all_vacancies(database_name: str, params: dict):
     """Receives a list of all vacancies indicating the company name, vacancy title and salary,
     and a link to the vacancy."""
-    pass
+    conn = psycopg2.connect(dbname=database_name, **params)
+    with conn.cursor() as cur:
+        sql_select_query = 'SELECT company_name, vacancy_name, salary, currency, vacancy_url ' \
+                           'FROM vacancies ' \
+                           'INNER JOIN companies using (company_id)'
+        cur.execute(sql_select_query)
+        data = cur.fetchall()
+        for d in data:
+            if d[2] == 0:
+                salary = 'Unknown'
+                currency = '-'
+            else:
+                salary = d[2]
+                currency = d[3]
+            print(f'Company name: {d[0]}, Vacancy name: {d[1]}, Salary: {salary} {currency}, url: {d[4]}')
 
 
-def get_avg_salary():
+def get_avg_salary(database_name: str, params: dict):
     """Get average salary of all vacancies."""
     pass
 
