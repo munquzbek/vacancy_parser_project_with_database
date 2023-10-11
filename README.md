@@ -11,11 +11,11 @@ pip install -r requirements.txt
 
 ## Usage
 
-'Run main.py'
-Enter keyword of vacancy: '(ex: Python)'
-Enter quantity of companies: '(ex: 10)'
-Do you want to look more with these companies? Yes or No: '("Yes" to look more, "No" to quit)'
-Tap enter to show options '(Tap enter or anything else)'
+`Run main.py`
+Enter keyword of vacancy: `(ex: Python)`
+Enter quantity of companies: `(ex: 10)`
+Do you want to look more with these companies? Yes or No: `("Yes" to look more, "No" to quit)`
+Tap enter to show options `(Tap enter or anything else)`
 
 You have these options:
 1. Get company names and their quantity of vacancies
@@ -25,5 +25,5 @@ You have these options:
 5. Get vacancies with keyword in name of vacancy
 "end" to exit
 
-'Follow instructions'
+`Follow instructions`
 
